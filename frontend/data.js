@@ -222,12 +222,39 @@ async function fetchFromProjectApi(nft, tokenId) {
   };
 }
 
-const _metaCache = new Map();
+const _metaCache = new Map(); // in-memory (per session)
+const META_LS_KEY = 'sq_meta_v1';
+let _metaLS = null;
+function _metaStorage() {
+  if (_metaLS === null) {
+    try { _metaLS = JSON.parse(localStorage.getItem(META_LS_KEY) || '{}'); } catch (_) { _metaLS = {}; }
+  }
+  return _metaLS;
+}
+function _metaPersist() {
+  try {
+    const store = _metaStorage();
+    const keys = Object.keys(store);
+    if (keys.length > 300) { // cap to stay well under the localStorage quota
+      keys.sort((a, b) => (store[b].at || 0) - (store[a].at || 0));
+      for (const k of keys.slice(300)) delete store[k];
+    }
+    localStorage.setItem(META_LS_KEY, JSON.stringify(store));
+  } catch (_) { /* quota / storage blocked — in-memory cache still works */ }
+}
 async function metadataFromChainCached(nft, tokenId) {
   const key = String(nft).toLowerCase() + ':' + tokenId;
   if (_metaCache.has(key)) return _metaCache.get(key);
+  const store = _metaStorage();
+  if (store[key] && store[key].meta) { // tokenURI metadata is immutable, safe to persist
+    const m = store[key].meta;
+    _metaCache.set(key, m);
+    return m;
+  }
   const m = await metadataFromChain(nft, tokenId);
   _metaCache.set(key, m);
+  store[key] = { meta: m, at: Date.now() };
+  _metaPersist();
   return m;
 }
 
@@ -309,7 +336,7 @@ const _statsCache = new Map();
 async function fetchCollectionStats(nft) {
   const key = String(nft).toLowerCase();
   const hit = _statsCache.get(key);
-  if (hit && (Date.now() - hit.at) < 15000) return hit.stats;
+  if (hit && (Date.now() - hit.at) < 60000) return hit.stats;
   const n = nftRead(nft), m = marketRead();
   const supply = Number(await n.totalSupply());
   const listingRows = await fetchListings(nft);
