@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>Squeek Market</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css?v=26" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#/">
+        <img class="brand-logo" src="/logo.jpg" alt="Squeek Market" />
+      </a>
+      <nav class="nav">
+        <a href="#/explore" class="nav-link" data-route="explore">Explore</a>
+        <button id="fb-btn" class="nav-link fb-btn" type="button" title="Feedback">Feedback</button>
+      </nav>
+      <div class="wallet-area">
+        <span id="net-badge" class="net-badge" hidden></span>
+        <button id="connect-btn" class="btn btn-ghost">Connect wallet</button>
+        <button id="addr" class="btn btn-ghost btn-sm" hidden title="">…</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="view" class="view" aria-live="polite"></main>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+
+  <div id="fb-overlay" class="fb-overlay" hidden>
+    <div class="fb-modal">
+      <h3>Feedback</h3>
+      <p class="muted fb-sub">Pick a type and tell us what's on your mind.</p>
+      <div id="fb-types" class="fb-types"></div>
+      <textarea id="fb-msg" class="fb-textarea" rows="5" placeholder="Describe it…"></textarea>
+      <input id="fb-contact" class="input fb-contact" type="text" placeholder="Optional: email or telegram" />
+      <div class="modal-actions">
+        <button id="fb-cancel" class="btn btn-ghost btn-sm" type="button">Cancel</button>
+        <button id="fb-submit" class="btn btn-primary btn-sm" type="button">Send feedback</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/vendor/ethers.min.js"></script>
+  <script src="/config.js?v=26"></script>
+  <script src="/data.js?v=26"></script>
+  <script src="/app.js?v=26"></script>
+</body>
+</html>
