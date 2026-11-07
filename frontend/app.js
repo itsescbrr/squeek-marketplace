@@ -313,7 +313,9 @@ async function renderCollection(view, nft) {
           off.innerHTML = '<div class="empty state">Connect your wallet to see and manage the offers you made.</div>';
         } else {
           const evs = await fetchMarketEvents(nft);
-          const offers = evs.filter((ev) => ev.fragment && ev.fragment.name === 'OfferMade' && ev.args.offerer && String(ev.args.offerer).toLowerCase() === signerAddr.toLowerCase());
+          const okey = (args) => String(args.tokenId) + ':' + String(args.offerer).toLowerCase();
+          const closed = new Set(evs.filter((ev) => ev.fragment && (ev.fragment.name === 'OfferCancelled' || ev.fragment.name === 'OfferAccepted')).map((ev) => okey(ev.args)));
+          const offers = evs.filter((ev) => ev.fragment && ev.fragment.name === 'OfferMade' && ev.args.offerer && String(ev.args.offerer).toLowerCase() === signerAddr.toLowerCase() && !closed.has(okey(ev.args)));
           off.innerHTML = offers.length
             ? '<div class="feed">' + offers.map((ev) => {
                 const a = ev.args;
