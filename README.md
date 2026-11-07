@@ -4,7 +4,7 @@ A self-hosted, editable, curated multi-collection NFT marketplace for the offici
 Squeek NFT collection in the Squeekchain ecosystem (deployed on Ethereum Sepolia). Escrow fixed-price
 listings + escrowed offers, 0% marketplace fee, creator royalty honored via EIP-2981.
 
-**Live:** https://squeek-marketplace.vercel.app
+**Live:** https://squeekmarket.space
 **Market contract:** `0xC36acc24A588d244247825045f48F00B9D379dAD` (Sepolia) — verified.
 
 ## Contract verification
