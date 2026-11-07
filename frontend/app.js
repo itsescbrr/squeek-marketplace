@@ -476,7 +476,9 @@ async function renderProfile(view, addr) {
   const myListings = listings.filter((l) => l.seller.toLowerCase() === addr.toLowerCase());
   const myEvents = events.filter((ev) => eventInvolves(ev, addr));
   const sold = myEvents.filter((ev) => ev.fragment && ev.fragment.name === 'Sold');
-  const offersMade = myEvents.filter((ev) => ev.fragment && ev.fragment.name === 'OfferMade');
+  const okey = (args) => String(args.tokenId) + ':' + String(args.offerer || '').toLowerCase();
+  const closedOffers = new Set(myEvents.filter((ev) => ev.fragment && (ev.fragment.name === 'OfferCancelled' || ev.fragment.name === 'OfferAccepted')).map((ev) => okey(ev.args)));
+  const offersMade = myEvents.filter((ev) => ev.fragment && ev.fragment.name === 'OfferMade' && !closedOffers.has(okey(ev.args)));
 
   const header = '<section class="hero"><div class="profile-head">'
     + identiconHtml(addr, 72)
