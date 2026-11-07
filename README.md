@@ -1,5 +1,7 @@
 # Squeek Market
 
+squeekchain-project: 55cf63e9-e48a-4499-94c9-b751788c465c
+
 A self-hosted, editable, curated multi-collection NFT marketplace for the official
 Squeek NFT collection in the Squeekchain ecosystem (deployed on Ethereum Sepolia). Escrow fixed-price
 listings + escrowed offers, 0% marketplace fee, creator royalty honored via EIP-2981.
